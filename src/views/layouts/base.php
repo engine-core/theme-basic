@@ -10,6 +10,7 @@
 /* @var $content string */
 
 use EngineCore\Ec;
+use EngineCore\enums\VisibleEnum;
 use EngineCore\extension\repository\info\ExtensionInfo;
 use EngineCore\extension\setting\SettingProviderInterface;
 use EngineCore\themes\Basic\assetBundle\SiteAsset;
@@ -44,8 +45,9 @@ SiteAsset::register($this);
         'content' => Html::encode(Ec::$service->getSystem()->getSetting()->get(SettingProviderInterface::SITE_KEYWORD)),
     ], 'keywords');
     echo Html::csrfMetaTags();
-    $title = Ec::$service->getSystem()->getSetting()->get(SettingProviderInterface::SITE_TITLE, '');
-    echo Html::tag('title', Html::encode($title ? $title . ' - ' . $this->title : $this->title));
+    $title = Ec::$service->getSystem()->getSetting()->get(SettingProviderInterface::SITE_TITLE);
+    $title = $title ? $title . ' - ' . $this->title : $this->title;
+    echo Html::tag('title', Html::encode($title));
     ?>
     <?php $this->head() ?>
 </head>
@@ -67,12 +69,13 @@ SiteAsset::register($this);
     ]);
     // 导航菜单
     $menuItems = Ec::$service->getMenu()->getPage()->generateNavigation('backend', [
-        'visible' => 1,
+        Ec::$service->getMenu()->getConfig()->getProvider()->getVisibleField() => VisibleEnum::VISIBLE,
     ]);
+//    Ec::dump($menuItems);exit;
     echo Nav::widget([
         'options'            => ['class' => 'navbar-nav'],
-        'titleField'         => 'alias_name',
-        'dropdownTitleField' => 'alias_name',
+        'titleField'         => Ec::$service->getMenu()->getConfig()->getProvider()->getAliasField(),
+        'dropdownTitleField' => Ec::$service->getMenu()->getConfig()->getProvider()->getAliasField(),
         'items'              => $menuItems,
     ]);
     // 右侧菜单

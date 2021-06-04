@@ -5,10 +5,17 @@
  * @license BSD 3-Clause License
  */
 
+declare(strict_types=1);
+
 namespace EngineCore\themes\Basic\assetBundle;
 
 use yii\web\AssetBundle;
 
+/**
+ * Class SiteAsset
+ *
+ * @author E-Kevin <e-kevin@qq.com>
+ */
 class SiteAsset extends AssetBundle
 {
     

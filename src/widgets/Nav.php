@@ -5,6 +5,8 @@
  * @license BSD 3-Clause License
  */
 
+declare(strict_types=1);
+
 namespace EngineCore\themes\Basic\widgets;
 
 use rmrevin\yii\fontawesome\FA;
@@ -15,7 +17,9 @@ use yii\bootstrap\Nav as baseNav;
 use yii\helpers\ArrayHelper;
 
 /**
- * Theme Nav widget.
+ * Class Nav
+ *
+ * @author E-Kevin <e-kevin@qq.com>
  */
 class Nav extends baseNav
 {

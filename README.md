@@ -1,2 +1,2 @@
 # theme-basic
-basic theme
+基础主题

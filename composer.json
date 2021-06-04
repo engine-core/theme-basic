@@ -7,11 +7,11 @@
       "email": "e-kevin@qq.com"
     }
   ],
-  "type": "ec-extensions",
+  "type": "ec-extension",
   "license": "BSD-3-Clause",
   "homepage": "https://github.com/engine-core/theme-basic",
   "require": {
-    "e-kevin/engine-core": "~1.0.0@dev"
+    "e-kevin/engine-core": "*"
   },
   "autoload": {
     "psr-4": {

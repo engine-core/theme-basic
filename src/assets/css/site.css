@@ -4,17 +4,6 @@
  * @license BSD 3-Clause License
  */
 
-@media (min-width: 768px) {
-    .cover-heading, .jumbotron .cover-heading {
-        font-size: 150px;
-        margin-bottom: 50px;
-    }
-
-    .cover-container .cover h1 {
-        font-size: 63px;
-    }
-}
-
 .wrap {
     height: 100%;
     min-height: 100%;

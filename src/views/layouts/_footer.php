@@ -14,7 +14,7 @@ use yii\helpers\Html;
         <?= Yii::t('ec/app', 'Copyright {date} by {company}',
             [
                 'date'    => Yii::$app->params['app.copyright'],
-                'company' => Yii::$app->params['app.name'],
+                'company' => Yii::$app->name,
             ]
         ); ?>
     </p>
