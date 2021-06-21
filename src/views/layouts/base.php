@@ -19,6 +19,7 @@ use yii\helpers\Html;
 use yii\bootstrap\NavBar;
 
 SiteAsset::register($this);
+$settingService = Ec::$service->getSystem()->getSetting();
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
@@ -30,37 +31,37 @@ SiteAsset::register($this);
     ]);
     $this->registerMetaTag([
         'http-equiv' => 'X-UA-Compatible',
-        'content'    => 'IE=edge',
+        'content' => 'IE=edge',
     ]);
     $this->registerMetaTag([
-        'name'    => 'viewport',
+        'name' => 'viewport',
         'content' => 'width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no',
     ]);
     $this->registerMetaTag([
-        'name'    => 'description',
-        'content' => Html::encode(Ec::$service->getSystem()->getSetting()->get(SettingProviderInterface::SITE_DESCRIPTION)),
+        'name' => 'description',
+        'content' => Html::encode($settingService->get(SettingProviderInterface::SITE_DESCRIPTION)),
     ], 'description');
     $this->registerMetaTag([
-        'name'    => 'keywords',
-        'content' => Html::encode(Ec::$service->getSystem()->getSetting()->get(SettingProviderInterface::SITE_KEYWORD)),
+        'name' => 'keywords',
+        'content' => Html::encode($settingService->get(SettingProviderInterface::SITE_KEYWORD)),
     ], 'keywords');
     echo Html::csrfMetaTags();
-    $title = Ec::$service->getSystem()->getSetting()->get(SettingProviderInterface::SITE_TITLE);
-    $title = $title ? $title . ' - ' . $this->title : $this->title;
-    echo Html::tag('title', Html::encode($title));
+    echo Html::tag('title', $this->title);
+
+    $this->head();
     ?>
-    <?php $this->head() ?>
 </head>
 <body>
 
-<div class="wrap">
-    <?php $this->beginBody() ?>
-    
+<?php $this->beginBody() ?>
+
+<div class="wrap" id="wrap">
+
     <?php
     NavBar::begin([
-        'brandLabel'            => Yii::$app->name,
-        'brandUrl'              => Yii::$app->homeUrl,
-        'options'               => [
+        'brandLabel' => Yii::$app->name,
+        'brandUrl' => Yii::$app->homeUrl,
+        'options' => [
             'class' => 'navbar-inverse navbar-fixed-top',
         ],
         'innerContainerOptions' => [
@@ -71,12 +72,11 @@ SiteAsset::register($this);
     $menuItems = Ec::$service->getMenu()->getPage()->generateNavigation('backend', [
         Ec::$service->getMenu()->getConfig()->getProvider()->getVisibleField() => VisibleEnum::VISIBLE,
     ]);
-//    Ec::dump($menuItems);exit;
     echo Nav::widget([
-        'options'            => ['class' => 'navbar-nav'],
-        'titleField'         => Ec::$service->getMenu()->getConfig()->getProvider()->getAliasField(),
+        'options' => ['class' => 'navbar-nav'],
+        'titleField' => Ec::$service->getMenu()->getConfig()->getProvider()->getAliasField(),
         'dropdownTitleField' => Ec::$service->getMenu()->getConfig()->getProvider()->getAliasField(),
-        'items'              => $menuItems,
+        'items' => $menuItems,
     ]);
     // 右侧菜单
     $rightMenuItems = [];
@@ -87,7 +87,7 @@ SiteAsset::register($this);
         } else {
             $rightMenuItems[] = '<li>'
                 . Html::a('Logout (' . Yii::$app->user->identity->username . ')', ['/passport/common/logout'], [
-                    'class'       => 'btn btn-link logout',
+                    'class' => 'btn btn-link logout',
                     'data-method' => 'post',
                 ])
                 . '</li>';
@@ -95,15 +95,19 @@ SiteAsset::register($this);
     }
     echo Nav::widget([
         'options' => ['class' => 'navbar-nav navbar-right'],
-        'items'   => $rightMenuItems,
+        'items' => $rightMenuItems,
     ]);
     NavBar::end();
     ?>
-    
+
     <?= $content ?>
-    
-    <?php $this->endBody() ?>
+
+    <?= $this->render('_footer.php') ?>
+
 </div>
+
+<?php $this->endBody() ?>
+
 </body>
 </html>
 <?php $this->endPage() ?>

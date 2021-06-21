@@ -6,26 +6,37 @@
  */
 
 /* @var $this \yii\web\View */
+
 /* @var $content string */
 
+use EngineCore\Ec;
+use EngineCore\extension\setting\SettingProviderInterface;
 use EngineCore\widgets\FlashAlert;
 use EngineCore\widgets\Issue;
+use yii\helpers\Html;
 use yii\widgets\Breadcrumbs;
 
-$layouts = '@EngineCore/themes/Basic/views/layouts/';
-$this->beginContent($layouts . 'base.php');
-?>
+$title = Ec::$service->getSystem()->getSetting()->get(SettingProviderInterface::SITE_TITLE);
+$this->title = $title ? $title . ' - ' . $this->title : $this->title;
+$this->title = Html::encode($this->title);
 
-<div class="container-fluid">
-    <div class="main">
-        <?= FlashAlert::widget() ?>
-        <?= Breadcrumbs::widget([
-            'links' => $this->params['breadcrumbs'] ?? [],
-        ]) ?>
-        <?= $content ?>
-        <?= Issue::widget() ?>
-    </div>
-</div>
-<?= $this->render($layouts . '_footer.php') ?>
+$this->beginContent('@EngineCore/themes/Basic/views/layouts/base.php');
 
-<?php $this->endContent(); ?>
+echo Html::beginTag('div', [
+    'id' => 'content-wrapper',
+    'class' => 'container-fluid main'
+]);
+
+echo FlashAlert::widget();
+
+echo Breadcrumbs::widget([
+    'links' => $this->params['breadcrumbs'] ?? [],
+]);
+
+echo $content;
+
+echo Issue::widget();
+
+echo Html::endTag('div');
+
+$this->endContent();
